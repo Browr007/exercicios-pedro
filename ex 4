@@ -1,0 +1,73 @@
+open class Produto(
+    val nome: String,
+    precoInicial: Double,
+    val quantidadeEstoque: Int
+) {
+    private var preco: Double = precoInicial
+
+    fun getPreco(): Double {
+        return preco
+    }
+
+    fun setPreco(valor: Double) {
+        if (valor >= 0) {
+            preco = valor
+        } else {
+            println("Erro: o preço não pode ser negativo.")
+        }
+    }
+
+    fun aplicarDesconto(percentual: Double) {
+        if (percentual >= 0 && percentual <= 100) {
+            val novoPreco = preco - (preco * percentual / 100)
+            setPreco(novoPreco)
+            println("Desconto de $percentual% aplicado ao produto $nome.")
+            println("Novo preço: R$ ${"%.2f".format(getPreco())}")
+        } else {
+            println("Erro: percentual inválido!")
+        }
+    }
+}
+
+class ProdutoPerecivel(
+    nome: String,
+    preco: Double,
+    quantidadeEstoque: Int,
+    val dataValidade: String
+) : Produto(nome, preco, quantidadeEstoque) {
+
+    fun estaVencido(dataHoje: String): Boolean {
+        return dataValidade < dataHoje
+    }
+}
+
+fun main() {
+
+    val leite = ProdutoPerecivel(
+        "Leite",
+        6.50,
+        20,
+        "2026/06/20"
+    )
+
+    val iogurte = ProdutoPerecivel(
+        "Iogurte",
+        8.00,
+        15,
+        "2026/07/10"
+    )
+
+    val dataHoje = "2026/06/26"
+
+    println("Data de hoje: $dataHoje\n")
+
+    println("Produto: ${leite.nome}")
+    println("Validade: ${leite.dataValidade}")
+    println("Está vencido? ${leite.estaVencido(dataHoje)}")
+
+    println()
+
+    println("Produto: ${iogurte.nome}")
+    println("Validade: ${iogurte.dataValidade}")
+    println("Está vencido? ${iogurte.estaVencido(dataHoje)}")
+}
