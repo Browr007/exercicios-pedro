@@ -1,0 +1,54 @@
+class Produto(
+    val nome: String,
+    precoInicial: Double,
+    val quantidadeEstoque: Int
+) {
+
+    (encapsulado)
+    private var preco: Double = precoInicial
+
+    fun getPreco(): Double {
+        return preco
+    }
+
+    fun setPreco(valor: Double) {
+        if (valor >= 0) {
+            preco = valor
+        } else {
+            println("Erro: o preço não pode ser negativo.")
+        }
+    }
+
+    fun aplicarDesconto(percentual: Double) {
+
+        if (percentual >= 0 && percentual <= 100) {
+            val novoPreco = preco - (preco * percentual / 100)
+            setPreco(novoPreco)
+
+            println("Desconto de $percentual% aplicado ao produto $nome.")
+            println("Novo preço: R$ ${"%.2f".format(getPreco())}")
+        } else {
+            println("Erro: percentual de desconto inválido! Informe um valor entre 0 e 100.")
+        }
+    }
+}
+
+fun main() {
+
+    val produto = Produto("Arroz", 8.50, 100)
+
+    println("Produto: ${produto.nome}")
+    println("Preço inicial: R$ ${"%.2f".format(produto.getPreco())}")
+    println()
+
+    produto.setPreco(10.00)
+    println("Novo preço definido: R$ ${"%.2f".format(produto.getPreco())}")
+
+    println()
+
+    produto.setPreco(-5.00)
+
+    println()
+
+    produto.aplicarDesconto(20.0)
+}
