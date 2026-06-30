@@ -1,0 +1,88 @@
+open class Produto(
+    val nome: String,
+    var preco: Double,
+    var quantidadeEstoque: Int
+)
+
+class ProdutoPerecivel(
+    nome: String,
+    preco: Double,
+    quantidadeEstoque: Int,
+    val dataValidade: String
+) : Produto(nome, preco, quantidadeEstoque) {
+
+    fun estaVencido(dataHoje: String): Boolean {
+        return dataValidade < dataHoje
+    }
+}
+
+class Vendedor(
+    val nome: String,
+    var salarioBase: Double,
+    var totalVendas: Double = 0.0
+) {
+
+    fun salarioAtual(): Double {
+        return salarioBase + (totalVendas * 0.05)
+    }
+
+    fun finalizarVenda(carrinho: List<Produto>, dataHoje: String) {
+
+        println("=== VENDA DO VENDEDOR $nome ===")
+
+        var totalCompra = 0.0
+
+        verificação de perecíveis vencidos
+        for (item in carrinho) {
+            if (item is ProdutoPerecivel && item.estaVencido(dataHoje)) {
+                println("AVISO: ${item.nome} está vencido!")
+            }
+        }
+
+    
+        for (item in carrinho) {
+
+            println("${item.nome} -> R$ ${"%.2f".format(item.preco)}")
+
+            totalCompra += item.preco
+
+            // desconta estoque
+            if (item.quantidadeEstoque > 0) {
+                item.quantidadeEstoque -= 1
+            }
+        }
+
+        // atualiza vendas do vendedor
+        totalVendas += totalCompra
+
+        println("--------------------------------")
+        println("Total da compra: R$ ${"%.2f".format(totalCompra)}")
+        println("Salário atualizado: R$ ${"%.2f".format(salarioAtual())}")
+    }
+}
+
+fun main() {
+
+    // Produtos
+    val arroz = Produto("Arroz", 8.50, 10)
+    val feijao = Produto("Feijão", 7.00, 5)
+
+    val leite = ProdutoPerecivel(
+        "Leite",
+        6.50,
+        8,
+        "2026/06/20"
+    )
+
+    val carrinho: List<Produto> = listOf(
+        arroz,
+        feijao,
+        leite
+    )
+
+    val vendedor = Vendedor("João", 2000.00)
+
+    val dataHoje = "2026/06/26"
+  
+    vendedor.finalizarVenda(carrinho, dataHoje)
+}
