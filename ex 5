@@ -1,0 +1,47 @@
+abstract class FuncionarioBase(
+    val nome: String,
+    val salarioBase: Double
+) {
+
+    abstract fun calcularSalario(): Double
+}
+
+class Vendedor(
+    nome: String,
+    salarioBase: Double,
+    val totalVendas: Double
+) : FuncionarioBase(nome, salarioBase) {
+
+    override fun calcularSalario(): Double {
+        return salarioBase + (totalVendas * 0.05)
+    }
+}
+
+class Gerente(
+    nome: String,
+    salarioBase: Double,
+    val bonusFixo: Double
+) : FuncionarioBase(nome, salarioBase) {
+
+    override fun calcularSalario(): Double {
+        return salarioBase + bonusFixo
+    }
+}
+
+fun main() {
+
+    val funcionarios: List<FuncionarioBase> = listOf(
+        Vendedor("João", 2500.00, 10000.00),
+        Vendedor("Maria", 2800.00, 8000.00),
+        Gerente("Carlos", 5000.00, 1500.00),
+        Gerente("Ana", 6000.00, 2000.00)
+    )
+
+
+    for (funcionario in funcionarios) {
+
+        println("Funcionário: ${funcionario.nome}")
+        println("Salário: R$ ${"%.2f".format(funcionario.calcularSalario())}")
+        println("--------------------------------")
+    }
+}
