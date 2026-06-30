@@ -1,0 +1,38 @@
+class Produto(
+    val nome: String,
+    var preco: Double,
+    val quantidadeEstoque: Int
+) {
+
+    fun aplicarDesconto(percentual: Double) {
+
+        if (percentual >= 0 && percentual <= 100) {
+            preco -= preco * (percentual / 100)
+            println("Desconto de $percentual% aplicado ao produto $nome.")
+            println("Novo preço: R$ ${"%.2f".format(preco)}")
+        } else {
+            println("Erro: percentual de desconto inválido! Informe um valor entre 0 e 100.")
+        }
+    }
+}
+
+fun main() {
+
+    val produto = Produto("Arroz", 8.50, 100)
+
+    println("Produto: ${produto.nome}")
+    println("Preço original: R$ ${"%.2f".format(produto.preco)}")
+    println()
+
+    produto.aplicarDesconto(10.0)
+
+    println()
+
+    // Teste com valor inválido (maior que 100)
+    produto.aplicarDesconto(150.0)
+
+    println()
+
+    // Teste com valor inválido (menor que 0)
+    produto.aplicarDesconto(-5.0)
+}
